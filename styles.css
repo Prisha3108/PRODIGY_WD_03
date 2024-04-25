@@ -1,0 +1,95 @@
+/* Style for the scoreboard table */
+#scoreboard {
+    margin-top: 20px;
+    border-collapse: collapse; /* Collapse borders */
+    width: 300px; /* Set table width */
+    text-align: center; /* Center align text */
+  }
+  
+  /* Style for table header */
+  #scoreboard th {
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    padding: 10px; /* Add padding */
+    border: 1px solid #ddd; /* Add border */
+  }
+  
+  /* Style for table cells */
+  #scoreboard td {
+    padding: 8px; /* Add padding */
+    border: 1px solid #ddd; /* Add border */
+  }
+  
+  /* Style for alternate table rows */
+  #scoreboard tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light gray background color */
+  }
+  
+  /* Style for player cells */
+  #scoreboard td:first-child {
+    font-weight: bold; /* Make player cells bold */
+  }
+  
+  /* Add styles for the game board and game info here */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 150px); /* Increase cell width */
+    grid-template-rows: repeat(3, 150px); /* Increase cell height */
+    margin-top: 20px; /* Adjust margin as needed */
+  }
+  
+  .cell {
+    width: 150px; /* Adjust cell width */
+    height: 150px; /* Adjust cell height */
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em; /* Adjust font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add transition effect */
+  }
+  
+  .cell:hover {
+    background-color: lightgray;
+  }
+  
+  .game-info {
+    margin-top: 20px; /* Add some space at the top */
+    padding: 20px; /* Add padding for better spacing */
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  }
+  
+  /* Style for the game info text and controls */
+  .game-info p {
+    font-size: 1.2em; /* Larger font size */
+    margin-bottom: 10px; /* Add some space at the bottom */
+  }
+  
+  .game-info button {
+    font-size: 1em; /* Adjust button font size */
+    padding: 10px 20px; /* Add padding to the button */
+    background-color: #4CAF50; /* Green button background */
+    color: white; /* Button text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded button corners */
+    cursor: pointer; /* Show pointer cursor on hover */
+  }
+  
+  .game-info button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  .game-info label {
+    font-size: 1.2em; /* Larger font size for the label */
+    margin-right: 10px; /* Add some space to the right of the label */
+  }
+  
+  .game-info select {
+    font-size: 1em; /* Adjust select font size */
+    padding: 5px; /* Add padding to the select */
+    border-radius: 5px; /* Rounded select corners */
+  }
+  

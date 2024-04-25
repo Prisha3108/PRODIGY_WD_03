@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <h1>TIC-TAC-TOE GAME</h1>
+  <style>
+    /* Center the heading and the board */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh; /* Ensures the content fills the entire viewport height */
+      background-color: #fffff0; /* Set a nice background color */
+    }
+
+    /* Style for the heading */
+    h1 {
+      margin-bottom: 20px; /* Add some space below the heading */
+    }
+
+    /* Style for the game board */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 150px);
+      grid-template-rows: repeat(3, 150px);
+    }
+    
+    /* Style for the individual cells */
+    .cell {
+      width: 150px;
+      height: 150px;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      cursor: pointer;
+    }
+    
+    .cell:hover {
+      background-color: #f08080;
+    }
+  </style>
+</head> 
+<body>
+  <div class="game-info">
+    <p id="turn-message">Player X's turn</p>
+    <button onclick="resetGame()">Reset</button>
+    <label for="mode-select">Choose mode:</label>
+    <select id="mode-select" onchange="changeMode()">
+      <option value="computer">Play with computer</option>
+      <option value="player">2 players</option>
+    </select>
+  </div>
+  <div class="board" id="board">
+    <div class="cell" onclick="handleClick(0)"></div>
+    <div class="cell" onclick="handleClick(1)"></div>
+    <div class="cell" onclick="handleClick(2)"></div>
+    <div class="cell" onclick="handleClick(3)"></div>
+    <div class="cell" onclick="handleClick(4)"></div>
+    <div class="cell" onclick="handleClick(5)"></div>
+    <div class="cell" onclick="handleClick(6)"></div>
+    <div class="cell" onclick="handleClick(7)"></div>
+    <div class="cell" onclick="handleClick(8)"></div>
+  </div>
+
+  <table id="scoreboard">
+    <tr>
+      <th>Player</th>
+      <th>Wins</th>
+      <th>Losses</th>
+      <th>Ties</th>
+    </tr>
+    <tr>
+      <td>X</td>
+      <td id="player1Wins">0</td>
+      <td id="player1Losses">0</td>
+      <td id="player1Ties">0</td>
+    </tr>
+    <tr>
+      <td>O</td>
+      <td id="player2Wins">0</td>
+      <td id="player2Losses">0</td>
+      <td id="player2Ties">0</td>
+    </tr>
+  </table>
+
+  <script>
+    let currentPlayer = 'X';
+    let gameBoard = ['', '', '', '', '', '', '', '', ''];
+    let gameOver = false;
+    let player1Wins = 0;
+    let player1Losses = 0;
+    let player1Ties = 0;
+    let player2Wins = 0;
+    let player2Losses = 0;
+    let player2Ties = 0;
+    let isAgainstComputer = true; // Default to play against the computer
+
+    function handleClick(index) {
+      if (!gameOver && gameBoard[index] === '') {
+        gameBoard[index] = currentPlayer;
+        renderBoard();
+        checkWinner();
+        if (!gameOver) {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+          if (isAgainstComputer && currentPlayer === 'O') {
+            // Computer's turn
+            setTimeout(computerTurn, 500); // Delay computer's move for better UX
+          }
+        }
+      }
+    }
+
+    function renderBoard() {
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach((cell, index) => {
+        cell.textContent = gameBoard[index];
+      });
+
+      // Display whose turn it is
+      document.getElementById('turn-message').textContent = 
+        gameOver ? 'Game Over' : `Player ${currentPlayer}'s turn`;
+
+      updateScoreboard();
+    }
+    function renderBoard() {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((cell, index) => {
+    cell.textContent = gameBoard[index];
+  });
+
+  // Display whose turn it is
+  const turnMessage = gameOver ? 'Game Over' : `Player ${currentPlayer}'s turn`;
+  document.getElementById('turn-message').textContent = turnMessage;
+
+  updateScoreboard();
+}
+
+
+    function checkWinner() {
+      const winningConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+
+      for (let condition of winningConditions) {
+        const [a, b, c] = condition;
+        if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+          gameOver = true;
+          if (gameBoard[a] === 'X') {
+            player1Wins++;
+            player2Losses++;
+          } else {
+            player2Wins++;
+            player1Losses++;
+          }
+          updateScoreboard();
+          alert(`${gameBoard[a]} wins!`);
+          break;
+        }
+      }
+      if (!gameBoard.includes('') && !gameOver) {
+        gameOver = true;
+        player1Ties++;
+        player2Ties++;
+        updateScoreboard();
+        alert("It's a tie!");
+      }
+    }
+
+    function resetGame() {
+      gameBoard = ['', '', '', '', '', '', '', '', ''];
+      currentPlayer = 'X';
+      gameOver = false;
+      renderBoard();
+    }
+
+    function computerTurn() {
+      if (!gameOver) {
+        const emptyCells = gameBoard.reduce((acc, cell, index) => {
+          if (cell === '') acc.push(index);
+          return acc;
+        }, []);
+        const randomIndex = Math.floor(Math.random() * emptyCells.length);
+        const index = emptyCells[randomIndex];
+        gameBoard[index] = currentPlayer;
+        renderBoard();
+        checkWinner();
+        if (!gameOver) currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      }
+    }
+
+    function updateScoreboard() {
+      document.getElementById('player1Wins').textContent = player1Wins;
+      document.getElementById('player1Losses').textContent = player1Losses;
+      document.getElementById('player1Ties').textContent = player1Ties;
+      document.getElementById('player2Wins').textContent = player2Wins;
+      document.getElementById('player2Losses').textContent = player2Losses;
+      document.getElementById('player2Ties').textContent = player2Ties;
+    }
+
+    function changeMode() {
+      const modeSelect = document.getElementById('mode-select');
+      isAgainstComputer = modeSelect.value === 'computer';
+      resetGame();
+    }
+  </script>
+</body>
+</html>
